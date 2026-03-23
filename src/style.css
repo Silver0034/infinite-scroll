@@ -1,0 +1,94 @@
+/* Infinite Scroll Row CSS */
+.wp-block-infinite-scroll-row {
+	display: flex;
+	flex-direction: row;
+	overflow: hidden;
+	width: 100%;
+	align-items: center;
+	overflow: hidden !important;
+	position: relative;
+	scrollbar-width: none;
+}
+.wp-block-infinite-scroll::-webkit-scrollbar {
+	display: none;
+}
+.infinite-scroll-wrapper {
+	display: flex;
+	flex-wrap: nowrap;
+	will-change: transform;
+	pointer-events: none;
+	user-select: none;
+	align-items: center;
+
+	.infinite-scroll-content {
+		display: contents;
+	}
+
+	* {
+		white-space: nowrap;
+	}
+
+	> * {
+		pointer-events: auto;
+		padding-left: 3em;
+		padding-right: 0;
+	}
+
+	.infinite-scroll-separator {
+		display: inline-block;
+		flex: none;
+		width: 2rem;
+		height: 2rem;
+		border-radius: 50%;
+		background: currentColor;
+		margin-inline: 3em;
+	}
+}
+
+.wp-block-infinite-scroll-row .infinite-scroll-screen-reader-content,
+.wp-block-infinite-scroll-row .infinite-scroll-screen-reader-content a {
+	position: absolute;
+	clip-path: unset;
+	overflow: hidden;
+	z-index: 1;
+	opacity: 0;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+}
+
+.wp-block-infinite-scroll-row:has(
+		.infinite-scroll-screen-reader-content a:focus-visible
+	)
+	.infinite-scroll-screen-reader-content {
+	opacity: 1;
+	display: grid;
+	place-content: center;
+}
+
+.wp-block-infinite-scroll-row:has(
+		.infinite-scroll-screen-reader-content a:focus-visible
+	)
+	a {
+	opacity: 1;
+	position: relative;
+	display: inline-block;
+}
+
+.wp-block-infinite-scroll-row:has(
+		.infinite-scroll-screen-reader-content a:focus-visible
+	)
+	.infinite-scroll-wrapper {
+	opacity: 0;
+}
+
+/* Keyframes to move '--infinite-scroll-distance' over '--infinite-scroll-duration', then reset */
+@keyframes infinite-scroll {
+	0% {
+		transform: translateX(0);
+	}
+	100% {
+		transform: translateX(var(--infinite-scroll-distance));
+	}
+}

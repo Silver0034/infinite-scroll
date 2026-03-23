@@ -1,0 +1,29 @@
+{
+  "apiVersion": 3,
+  "name": "infinite-scroll/row",
+  "title": "Infinite Scroll",
+  "category": "layout",
+  "icon": "arrow-right-alt2",
+  "description": "A horizontally scrolling row that endlessly scrolls its content.",
+  "supports": {
+    "align": [
+      "wide",
+      "full"
+    ],
+    "spacing": {
+      "blockGap": true
+    },
+    "color": {
+      "background": true,
+      "text": true
+    }
+  },
+  "attributes": {
+    "secondsPerWidth": {
+      "type": "number",
+      "default": 10
+    }
+  },
+  "editorScript": "file:./index.js",
+  "style": "file:./style.css"
+}
