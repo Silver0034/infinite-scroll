@@ -1,1 +1,103 @@
-.wp-block-infinite-scroll-row{align-items:center;display:flex;flex-direction:row;overflow:hidden;overflow:hidden!important;position:relative;scrollbar-width:none;width:100%}.wp-block-infinite-scroll::-webkit-scrollbar{display:none}.infinite-scroll-wrapper{align-items:center;display:flex;flex-wrap:nowrap;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none;will-change:transform}.infinite-scroll-wrapper .infinite-scroll-content{display:contents}.infinite-scroll-wrapper *{white-space:nowrap}.infinite-scroll-wrapper>*{padding-left:3em;padding-right:0;pointer-events:auto}.infinite-scroll-wrapper .infinite-scroll-separator{background:currentColor;border-radius:50%;display:inline-block;flex:none;height:2rem;margin-inline:3em;width:2rem}.wp-block-infinite-scroll-row.is-infinite-scroll-initializing .infinite-scroll-wrapper{opacity:0}.wp-block-infinite-scroll-row.is-infinite-scroll-ready .infinite-scroll-wrapper{opacity:1;transition:opacity .12s linear}.wp-block-infinite-scroll-row .infinite-scroll-screen-reader-content,.wp-block-infinite-scroll-row .infinite-scroll-screen-reader-content a{clip-path:unset;height:100%;left:0;opacity:0;overflow:hidden;position:absolute;top:0;width:100%;z-index:1}.wp-block-infinite-scroll-row:has(.infinite-scroll-screen-reader-content a:focus-visible) .infinite-scroll-screen-reader-content{display:grid;opacity:1;place-content:center}.wp-block-infinite-scroll-row:has(.infinite-scroll-screen-reader-content a:focus-visible) a{display:inline-block;opacity:1;position:relative}.wp-block-infinite-scroll-row:has(.infinite-scroll-screen-reader-content a:focus-visible) .infinite-scroll-wrapper{opacity:0}@keyframes infinite-scroll{0%{transform:translateX(0)}to{transform:translateX(var(--infinite-scroll-distance))}}
+/*!***************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/style.scss ***!
+  \***************************************************************************************************************************************************************************************************************************************/
+/* Infinite Scroll Row CSS */
+.wp-block-infinite-scroll-row {
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  width: 100%;
+  align-items: center;
+  overflow: hidden !important;
+  position: relative;
+  scrollbar-width: none;
+}
+.wp-block-infinite-scroll-row:not(:has(.infinite-scroll-wrapper)) {
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.wp-block-infinite-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.infinite-scroll-wrapper {
+  display: flex;
+  flex-wrap: nowrap;
+  will-change: transform;
+  pointer-events: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  align-items: center;
+}
+.infinite-scroll-wrapper .infinite-scroll-content {
+  display: contents;
+}
+.infinite-scroll-wrapper * {
+  white-space: nowrap;
+}
+.infinite-scroll-wrapper > * {
+  pointer-events: auto;
+  padding-left: 3em;
+  padding-right: 0;
+}
+.infinite-scroll-wrapper .infinite-scroll-separator {
+  display: inline-block;
+  flex: none;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: currentColor;
+  margin-inline: 3em;
+}
+
+.wp-block-infinite-scroll-row.is-infinite-scroll-initializing .infinite-scroll-wrapper {
+  opacity: 0;
+}
+
+.wp-block-infinite-scroll-row.is-infinite-scroll-ready .infinite-scroll-wrapper {
+  opacity: 1;
+  transition: opacity 120ms linear;
+}
+
+.wp-block-infinite-scroll-row .infinite-scroll-screen-reader-content,
+.wp-block-infinite-scroll-row .infinite-scroll-screen-reader-content a {
+  position: absolute;
+  clip-path: unset;
+  overflow: hidden;
+  z-index: 1;
+  opacity: 0;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.wp-block-infinite-scroll-row:has(.infinite-scroll-screen-reader-content a:focus-visible) .infinite-scroll-screen-reader-content {
+  opacity: 1;
+  display: grid;
+  place-content: center;
+}
+
+.wp-block-infinite-scroll-row:has(.infinite-scroll-screen-reader-content a:focus-visible) a {
+  opacity: 1;
+  position: relative;
+  display: inline-block;
+}
+
+.wp-block-infinite-scroll-row:has(.infinite-scroll-screen-reader-content a:focus-visible) .infinite-scroll-wrapper {
+  opacity: 0;
+}
+
+/* Keyframes to move '--infinite-scroll-distance' over '--infinite-scroll-duration', then reset */
+@keyframes infinite-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(var(--infinite-scroll-distance));
+  }
+}
+
+/*# sourceMappingURL=style-index.css.map*/

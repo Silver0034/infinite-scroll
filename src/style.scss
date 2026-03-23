@@ -8,6 +8,11 @@
 	overflow: hidden !important;
 	position: relative;
 	scrollbar-width: none;
+
+	&:not(:has(.infinite-scroll-wrapper)) {
+		white-space: nowrap;
+		overflow: hidden;
+	}
 }
 
 .wp-block-infinite-scroll::-webkit-scrollbar {
