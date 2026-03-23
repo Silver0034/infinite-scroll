@@ -9,9 +9,11 @@
 	position: relative;
 	scrollbar-width: none;
 }
+
 .wp-block-infinite-scroll::-webkit-scrollbar {
 	display: none;
 }
+
 .infinite-scroll-wrapper {
 	display: flex;
 	flex-wrap: nowrap;
@@ -43,6 +45,17 @@
 		background: currentColor;
 		margin-inline: 3em;
 	}
+}
+
+.wp-block-infinite-scroll-row.is-infinite-scroll-initializing
+	.infinite-scroll-wrapper {
+	opacity: 0;
+}
+
+.wp-block-infinite-scroll-row.is-infinite-scroll-ready
+	.infinite-scroll-wrapper {
+	opacity: 1;
+	transition: opacity 120ms linear;
 }
 
 .wp-block-infinite-scroll-row .infinite-scroll-screen-reader-content,

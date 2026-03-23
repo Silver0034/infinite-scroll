@@ -3,10 +3,13 @@
 	"version": "1.0.0",
 	"main": "build/index.js",
 	"scripts": {
-		"build": "wp-scripts build",
+		"build": "node build.js",
 		"start": "wp-scripts start"
 	},
 	"devDependencies": {
-		"@wordpress/scripts": "^26.0.0"
+		"@wordpress/scripts": "^26.0.0",
+		"clean-css": "^5.3.3",
+		"sass": "^1.83.0",
+		"terser": "^5.39.2"
 	}
 }

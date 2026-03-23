@@ -65,7 +65,7 @@ npm run build
 ## Project Structure
 
 -   `index.php`: plugin bootstrap, script/style enqueue, block registration.
--   `infinite-scroll.js`: front-end animation/class logic.
+-   `src/frontend.js`: front-end animation/class logic.
 -   `src/`: block source files used during development.
 -   `build/`: compiled assets consumed by WordPress at runtime.
 
@@ -75,8 +75,8 @@ The plugin creates a visual animated copy for presentation while preserving a sc
 
 ## Important Behavior
 
--   Front-end script is enqueued on public pages via `wp_enqueue_scripts`.
--   The block style is loaded from `build/style-index.css`.
+-   Front-end script is conditionally enqueued on public pages with the block via `wp_enqueue_scripts`.
+-   Front-end style is loaded from `build/style.min.css`.
 -   The plugin duplicates content at runtime to keep the loop continuous.
 
 ## Troubleshooting

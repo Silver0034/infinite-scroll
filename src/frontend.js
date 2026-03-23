@@ -13,6 +13,11 @@ class InfiniteScroll {
 	#lastTimestamp = null
 	#firstPlay = true
 	#screenReaderContent = null
+	#visibilityListener = null
+	#setupRetryFrame = null
+	#setupAttempts = 0
+	#maxSetupAttempts = 120
+	#isReady = false
 
 	constructor(element) {
 		this.#block = element
@@ -25,55 +30,113 @@ class InfiniteScroll {
 		this.#moveContentToScreenReaderContent()
 
 		this.#createInitialAnimationContent()
-
-		window.addEventListener('load', () => {
-			console.log('Window loaded, starting infinite scroll animation')
-			requestAnimationFrame(this.#addDuplicateAnimationContent.bind(this))
-			this.play(true)
-			this.#addHoverEventListeners()
-			setTimeout(() => {
-				this.#limitWrapperWidth()
-			}, 500)
-		})
+		this.#block.classList.add('is-infinite-scroll-initializing')
+		this.#addHoverEventListeners()
+		this.#initializeAnimation()
 	}
 
-	#addDuplicateAnimationContent() {
-		this.#maxDistance = this.#wrapper.offsetWidth
-		const contentWidth = this.#block.offsetWidth
-
-		console.log(
-			'Content Width:',
-			contentWidth,
-			'Max Distance:',
-			this.#maxDistance
-		)
-
-		// get the number of copies needed to cover the width plus one extra
-		const copiesNeeded = Math.ceil(contentWidth / this.#maxDistance) + 1
-
-		// stop if there's a problem or copiesNeeded is infinity
-		if (!isFinite(copiesNeeded) || copiesNeeded <= 1) {
-			console.warn(
-				'Infinite Scroll: Unable to calculate copies needed. Animation will not run.'
-			)
+	#initializeAnimation() {
+		if (this.#isReady) {
 			return
 		}
 
-		console.log('calculation:', Math.ceil(contentWidth / this.#maxDistance))
-
-		console.log('Copies Needed:', copiesNeeded - 1)
-
-		// Add the required number of copies to the wrapper
-		for (let i = 0; i < copiesNeeded; i++) {
-			this.#wrapper.appendChild(this.#content.cloneNode(true))
+		if (this.#trySetupAnimation()) {
+			this.#finalizeSetup()
+			return
 		}
+
+		if (document.visibilityState !== 'visible') {
+			this.#waitForVisibility()
+			return
+		}
+
+		if (this.#setupAttempts >= this.#maxSetupAttempts) {
+			console.warn(
+				'Infinite Scroll: Could not determine dimensions. Keeping static content.'
+			)
+			this.#block.classList.remove('is-infinite-scroll-initializing')
+			return
+		}
+
+		this.#setupAttempts += 1
+		this.#queueSetupRetry()
+	}
+
+	#queueSetupRetry() {
+		if (this.#setupRetryFrame) {
+			return
+		}
+
+		this.#setupRetryFrame = requestAnimationFrame(() => {
+			this.#setupRetryFrame = null
+			this.#initializeAnimation()
+		})
+	}
+
+	#waitForVisibility() {
+		if (this.#visibilityListener) {
+			return
+		}
+
+		this.#visibilityListener = () => {
+			if (document.visibilityState === 'visible') {
+				document.removeEventListener(
+					'visibilitychange',
+					this.#visibilityListener
+				)
+				this.#visibilityListener = null
+				this.#setupAttempts = 0
+				this.#initializeAnimation()
+			}
+		}
+
+		document.addEventListener('visibilitychange', this.#visibilityListener)
+	}
+
+	#finalizeSetup() {
+		this.#isReady = true
+		this.#block.classList.remove('is-infinite-scroll-initializing')
+		this.#block.classList.add('is-infinite-scroll-ready')
+		this.play(true)
+		this.#limitWrapperWidth()
+	}
+
+	#trySetupAnimation() {
+		if (!this.#wrapper) {
+			return false
+		}
+
+		this.#maxDistance = this.#wrapper.offsetWidth
+		const contentWidth = this.#block.offsetWidth
+
+		if (
+			!Number.isFinite(this.#maxDistance) ||
+			this.#maxDistance <= 0 ||
+			!Number.isFinite(contentWidth) ||
+			contentWidth <= 0
+		) {
+			return false
+		}
+
+		const totalCopies = Math.ceil(contentWidth / this.#maxDistance) + 2
+
+		if (!isFinite(totalCopies) || totalCopies < 2) {
+			return false
+		}
+
+		const fragment = document.createDocumentFragment()
+		for (let i = 0; i < totalCopies; i++) {
+			fragment.appendChild(this.#content.cloneNode(true))
+		}
+		this.#wrapper.replaceChildren(fragment)
 
 		this.#block.style.setProperty(
 			'--infinite-scroll-distance',
 			`-${this.#maxDistance}px`
 		)
 
-		this.#targetVelocity = this.#maxDistance / (this.#defaultSpeed * 60) // px per frame at 60fps
+		this.#targetVelocity = this.#maxDistance / (this.#defaultSpeed * 60)
+		return true
 	}
 
 	#addHoverEventListeners() {
@@ -239,6 +302,10 @@ class InfiniteScroll {
 	}
 
 	play(first = false) {
+		if (!this.#maxDistance || this.#maxDistance <= 0) {
+			return
+		}
+
 		this.#playing = true
 		this.#block.classList.remove('paused')
 		this.#targetVelocity = this.#maxDistance / (this.#defaultSpeed * 60)
